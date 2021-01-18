@@ -2,10 +2,12 @@ import os
 import csv
 
 budget_path = os.path.join('..', 'Resources', 'budget_data.csv')
-months = 0
+month = []
+
+change =[]
 netprofit = 0
 prev = 0
-change =[]
+
 tch = 0
 ginc = 0
 gdec = 0
@@ -16,24 +18,23 @@ with open(budget_path) as budgetfile:
    
 
     for row in dataset:
-        # create a dictionary withs months : change instead 
-        
-        months += 1
+        month.append(row[0])
         netprofit += int(row[1])
        
         if prev == 0:
             change.append(0)
         else:
-            diff = prev - int(row[1])
+            diff =  int(row[1]) - prev
             change.append(diff)
-        # if diff < 0:
-        #     if diff < gdec:
-        #         gdec=dif
-
+       
         prev = int(row[1])
 
     
+gic = max(change)
+gdec = min(change)
 
+i= change.index(gic)
+j= change.index(gdec)
 
 
 
@@ -48,12 +49,13 @@ avch = tch / nch
 
 
 #The total number of months included in the dataset
-print(f'Total Months: {months}')
+print(f'Total Months: {len(month)}')
 
 #The net total amount of "Profit/Losses" over the entire period
-print (f'Net Profit: {netprofit}')
+print (f'Net Profit: ${netprofit}')
 #Calculate the changes in "Profit/Losses" over the entire period, then find the average of those changes
-print(f'Average change: {avch}')
+print(f'Average change: ${round(avch,2)}')
 #The greatest increase in profits (date and amount) over the entire period
-#
+print (f'Greatest Increase in Profits: {month[i]} ({gic})')
 # The greatest decrease in losses (date and amount) over the entire period
+print (f'Greatest Decrease in Profits: {month[j]} ({gdec})')
