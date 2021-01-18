@@ -3,9 +3,10 @@ import csv
 
 el_path = os.path.join ('..', 'Resources', 'election_data.csv')
 
-poll = []
-candidate = []
-votes =[]
+poll = [] #list formed with candidate column (vote per voter id)
+candidate = [] #list of candidates which received a vote
+v_count =[]
+results = {}
 vote_percentage =[]
 i = ' '
 #read file and skip the keader
@@ -13,42 +14,41 @@ with open(el_path) as eldata:
     election = csv.reader(eldata, delimiter=',')
     csv_header = next(election)
     
-    #create a liss with tha candidate column, because the other data is not relevant for the result
+    #create a list with tha candidate column, because the other data is not relevant for the result
     for row in election:
            poll.append(row[2])
     
-    #by sorting the data, we can group hta polls by candidate names in order to create a list with the names of the candidates with no reapeated data
-    poll.sort()
+    #by sorting the data, in order to create a list of candidates who received votes
     for x in poll:
         if x != i:
             candidate.append(x)
             i = x
 
     #count the votes per candidate and creating the list of results    
-    for y in candidate:
-        votes.append(poll.count(y))
+    for x in candidate:
+        v_count.append(poll.count(x))
 
-    #create a list that will serve two puposes. 1.- order the votes from higher to lower, and returning an index which will be used to order tha candidates in the same order
-    # 2. obtain the % votes in order  
-    for z in votes:
-        vote_percentage.append(z)
-    vote_percentage.sort(reverse = True)
+for x in range(len(candidate)):
+    print(candidate[x], ' ', v_count[x])
 
-    #obtain total votes
-    totalvotes = len(poll)
 
-    #print the data
-    print(f'```text\nElection Results')
-    print(f'---------------------------------------------')
-    print('Total Votes', totalvotes)
-    print(f'---------------------------------------------')
-    j = len(candidate)
-    for i in range(j):
-        print(f'{candidate[votes.index(vote_percentage[i])]}:  {round(vote_percentage[i]/totalvotes*100,2)}%  ({vote_percentage[i]})')
-    print(f'---------------------------------------------')
-    print(f'Winner: {candidate[votes.index(vote_percentage[0])]}')
-    print(f'---------------------------------------------')
-    print(f'```')
+    # s_results = sorted(results.items(), key=lambda item: item[1], reverse = True)
+
+
+    # #obtain total votes
+    # totalvotes = len(poll)
+
+    # #print the data
+    # print(f'```text\nElection Results')
+    # print(f'---------------------------------------------')
+    # print('Total Votes', totalvotes)
+    # print(f'---------------------------------------------')
+    # for x in s_results:
+    #     print(f'{x[0]}: {round(x[1]/totalvotes*100, 2)}% ({x[1]})')
+    # print(f'---------------------------------------------')
+    # print(f'Winner: {s_results[0][0]}')
+    # print(f'---------------------------------------------')
+    # print(f'```')
 
     
        
