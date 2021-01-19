@@ -2,6 +2,7 @@ import os
 import csv
 
 el_path = os.path.join ('..', 'Resources', 'election_data.csv')
+analysis_path = os.path.join ('..', 'Analysis', 'election_Results.txt')
 
 poll = [] #list formed with candidate column (vote per voter id)
 candidate = [] #list of candidates which received a vote
@@ -19,72 +20,43 @@ with open(el_path) as eldata:
            poll.append(row[2])
     
     #by sorting the data, in order to create a list of candidates who received votes
+    poll.sort()
     for x in poll:
         if x != i:
             candidate.append(x)
             i = x
 
-    #count the votes per candidate and creating the list of results    
-    for x in candidate:
-        v_count.append(poll.count(x))
+    #count the votes per candidate and creating a dictionary witn candidate and the number of votes per candidate    
+    for y in candidate:
+         results[y] = poll.count(y)
 
-for x in range(len(candidate)):
-    print(candidate[x], ' ', v_count[x])
+    #sorting the dictionary from greater to lower   
+    s_results = sorted(results.items(), key=lambda item: item[1], reverse = True)
 
+    #obtain total votes
+    totalvotes = len(poll)
 
-    # s_results = sorted(results.items(), key=lambda item: item[1], reverse = True)
+    #print the data
+    print(f'```text\nElection Results')
+    print(f'---------------------------------------------')
+    print('Total Votes: ', totalvotes)
+    print(f'---------------------------------------------')
+    for x in s_results:
+        print(f'{x[0]}: {round(x[1]/totalvotes*100, 2)}% ({x[1]})')
+    print(f'---------------------------------------------')
+    print(f'Winner: {s_results[0][0]}')
+    print(f'---------------------------------------------')
+    print(f'```')
 
-
-    # #obtain total votes
-    # totalvotes = len(poll)
-
-    # #print the data
-    # print(f'```text\nElection Results')
-    # print(f'---------------------------------------------')
-    # print('Total Votes', totalvotes)
-    # print(f'---------------------------------------------')
-    # for x in s_results:
-    #     print(f'{x[0]}: {round(x[1]/totalvotes*100, 2)}% ({x[1]})')
-    # print(f'---------------------------------------------')
-    # print(f'Winner: {s_results[0][0]}')
-    # print(f'---------------------------------------------')
-    # print(f'```')
-
-    
-       
-
-
-
-
-# * You will be give a set of poll data called [election_data.csv](PyPoll/Resources/election_data.csv). The dataset is composed of three columns: `Voter ID`, `County`, and `Candidate`. Your task is to create a Python script that analyzes the votes and calculates each of the following:
-
-#   * The total number of votes cast
-
-#   * A complete list of candidates who received votes
-
-#   * The percentage of votes each candidate won
-
-#   * The total number of votes each candidate won
-
-#   * The winner of the election based on popular vote.
-
-# * As an example, your analysis should look similar to the one below:
-
-#   ```text
-#   Election Results
-#   -------------------------
-#   Total Votes: 3521001
-#   -------------------------
-#   Khan: 63.000% (2218231)
-#   Correy: 20.000% (704200)
-#   Li: 14.000% (492940)
-#   O'Tooley: 3.000% (105630)
-#   -------------------------
-#   Winner: Khan
-#   -------------------------
-#   ```
-# Voter ID,County,Candidate
-# 12864552,Marsh,Khan
-# 17444633,Marsh,Correy
-# 19330107,Marsh,Khan
-# 19865775,Queen,Khan
+    with open(analysis_path, 'w') as textfile:
+        
+        textfile.write(f'```text\nElection Results\n')
+        textfile.write(f'---------------------------------------------\n')
+        textfile.write(f'Total Votes: {totalvotes}\n')
+        textfile.write(f'---------------------------------------------\n')
+        for x in s_results:
+            textfile.write(f'{x[0]}: {round(x[1]/totalvotes*100, 2)}% ({x[1]})\n')
+        textfile.write(f'---------------------------------------------\n')
+        textfile.write(f'Winner: {s_results[0][0]}\n')
+        textfile.write(f'---------------------------------------------\n')
+        textfile.write(f'```\n')
