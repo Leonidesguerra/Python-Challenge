@@ -2,7 +2,7 @@ import os
 import csv
 
 el_path = os.path.join ('..', 'Resources', 'election_data.csv')
-analysis_path = os.path.join ('..', 'Analysis', 'election_Results.txt')
+analysis_path = os.path.join ('..', 'Analysis', 'election_results.txt')
 
 poll = [] #list formed with candidate column (vote per voter id)
 candidate = [] #list of candidates which received a vote
@@ -10,6 +10,7 @@ v_count =[]
 results = {}
 vote_percentage =[]
 i = ' '
+
 #read file and skip the keader
 with open(el_path) as eldata:
     election = csv.reader(eldata, delimiter=',')
@@ -39,7 +40,7 @@ with open(el_path) as eldata:
     #print the data
     print(f'```text\nElection Results')
     print(f'---------------------------------------------')
-    print('Total Votes: ', totalvotes)
+    print(f'Total Votes: {totalvotes}')
     print(f'---------------------------------------------')
     for x in s_results:
         print(f'{x[0]}: {round(x[1]/totalvotes*100, 2)}% ({x[1]})')

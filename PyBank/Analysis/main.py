@@ -5,16 +5,17 @@ budget_path = os.path.join('..', 'Resources', 'budget_data.csv')
 analysis_path = os.path.join("..", "Analysis", "analysis.txt")
 
 month = [] #lis created with the month column
-change =[] #list created with the montly profit change
-profit = {}
+change = [] #list created with the montly profit change
+profit = {} #Dictionary with month (as key) : profit change (as value)
 
 netprofit = 0
 prev = 0 # this will be used to use the previous profit value in order to calculate the change
 tch = 0
+diff = 0
 ginc = 0
 gdec = 0
-diff = 0
 
+#open the data file and skipping the header
 with open(budget_path) as budgetfile:
     dataset = csv.reader(budgetfile, delimiter=',')
     csv_header = next(dataset)
@@ -34,6 +35,7 @@ with open(budget_path) as budgetfile:
        
         prev = int(row[1])
 
+    #create a dictionary with key=month : change =value
     for x in range(len(month)):  
         profit[month[x]]= change[x]
 
@@ -45,13 +47,11 @@ gdec = min(profit, key=profit.get)
 #calculate the average change
 nch = len(change)-1
 for x in change: 
-    tch += int(x)
-    
+    tch += int(x)    
 avch = tch / nch
 
 #The total number of months included in the dataset
 print(f'Total Months: {len(month)}')
-
 #The net total amount of "Profit/Losses" over the entire period
 print (f'Net Profit: ${netprofit}')
 #Calculate the changes in "Profit/Losses" over the entire period, then find the average of those changes
@@ -61,6 +61,7 @@ print (f'Greatest Increase in Profits: {gic} ({profit[gic]})')
 # The greatest decrease in losses (date and amount) over the entire period
 print (f'Greatest Decrease in Profits: {gdec} ({profit[gdec]})')
 
+#print the analysis result to .txt file
 with open(analysis_path, 'w') as textfile:
     textfile.write(f'Total Months: {len(month)}\n')
     textfile.write (f'Net Profit: ${netprofit}\n')
